@@ -1,21 +1,22 @@
-import subprocess,os,cleanup,threading
+import subprocess,os,cleanup,threading,re,app
 
 def download(file, filename):
+    filename = app.formatFilename(filename)
     # Define the paths    
     current_dir = os.getcwd()
-    input_audio_path = os.path.join(current_dir, "tmp", filename)
-    output_audio_path = os.path.join(current_dir, "tmp", filename.replace(".m4a", ".mp3"))
+    input_audio_path = os.path.join(current_dir,filename)
+   
+    output_audio_path = os.path.join(current_dir, filename.replace(".m4a", ".mp3"))
+    print(output_audio_path)
     if os.path.exists(output_audio_path):
         print("file already exist")
         return
-    file.download(filename="tmp/"+filename)
-
-    # Specify the FFmpeg executable path
-    ffmpeg_path = "C:/Users/UBAID PATEL/Downloads/ffmpeg-2023-09-07-git-9c9f48e7f2-full_build/ffmpeg-2023-09-07-git-9c9f48e7f2-full_build/bin/ffmpeg.exe"
+    
+    file.download(filename=filename)
 
     try:
         cmd = [
-            ffmpeg_path,
+            app.ffmpeg,
             "-i", input_audio_path,
             "-acodec", "libmp3lame",
             "-q:a", "2",

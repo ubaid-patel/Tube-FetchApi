@@ -1,4 +1,4 @@
-from pytube import YouTube
+from pytubefix import YouTube
 import math,random,threading,time,downloadAudio
 from flask import jsonify
 
@@ -13,6 +13,7 @@ def inactiveUser(id,users):
     print("Userid removed")
 
 def info(link,users):
+    print(users!=None)
     if link != None and users != None :
         try:
             yt = YouTube(link)
@@ -40,7 +41,7 @@ def info(link,users):
                 if tid in users:
                     print("user already exists")
                 else:
-                    threading.Thread(target=inactiveUser, args=[tid]).start()
+                    threading.Thread(target=inactiveUser, args=[tid,users]).start()
                     users[tid] = [yt]
                     id = tid
                     unique = True
